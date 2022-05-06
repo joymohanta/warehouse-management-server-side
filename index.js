@@ -39,7 +39,8 @@ async function run() {
     //Post a new Item
     app.post("/item", async (req, res) => {
       const newItem = req.body;
-      res.send(newItem);
+      const getResult = await itemCollection.insertOne(newItem);
+      res.send(getResult);
     });
   } finally {
     // await client.close();
