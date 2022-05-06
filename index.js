@@ -42,6 +42,13 @@ async function run() {
       const getResult = await itemCollection.insertOne(newItem);
       res.send(getResult);
     });
+
+    //Delete one item
+    app.delete("/item/:id", async (req, res) => {
+      const id = req.params.id;
+      const deleteResult = await itemCollection.deleteOne(query);
+      res.send(deleteResult);
+    });
   } finally {
     // await client.close();
   }
