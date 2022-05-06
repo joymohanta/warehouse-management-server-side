@@ -35,6 +35,12 @@ async function run() {
       const item = await itemCollection.findOne(query);
       res.send(item);
     });
+
+    //Post a new Item
+    app.post("/item", async (req, res) => {
+      const newItem = req.body;
+      res.send(newItem);
+    });
   } finally {
     // await client.close();
   }
