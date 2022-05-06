@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const port = process.env.PORT || 5000;
 
@@ -16,12 +16,30 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
-client.connect((err) => {
-  const collection = client.db("test").collection("devices");
-  console.log("Laptop dealer ship connected");
-  // perform actions on the collection object
-  client.close();
-});
+
+async function run() {
+  try {
+    await client.connect();
+    const itemCollection = client.db("laptopDealer").collection("item");
+
+    app.get("/item", async (req, res) => {
+      const query = {};
+      const cursor = itemCollection.find(query);
+      const items = await cursor.toArray();
+      res.send(items);
+    });
+
+    app.get("/item/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const item = await itemCollection.findOne(query);
+      res.send(item);
+    });
+  } finally {
+    // await client.close();
+  }
+}
+run().catch(console.dir);
 
 app.get("/", (req, res) => {
   res.send("Running laptop-dealer server");
