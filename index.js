@@ -54,7 +54,7 @@ async function run() {
       res.send(getResult);
     });
 
-    // Put or update a item
+    // PUT or update a item
     app.put("/item/:id", async (req, res) => {
       const id = req.params.id;
       const quantityNumber = req.body;
